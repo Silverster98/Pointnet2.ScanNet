@@ -143,7 +143,7 @@ class Solver():
         torch.save(self.model.state_dict(), os.path.join(model_root, "model_last.pth"))
 
         # export
-        self._log_writer.export_scalars_to_json(os.path.join(CONF.OUTPUT_ROOT, self.stamp, "tensorboard", "all_scalars.json"))
+        # self._log_writer.export_scalars_to_json(os.path.join(CONF.OUTPUT_ROOT, self.stamp, "tensorboard", "all_scalars.json"))
 
     def _set_phase(self, phase):
         if phase == "train":
