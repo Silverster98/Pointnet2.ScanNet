@@ -175,7 +175,7 @@ def evaluate(args):
     # prepare data
     print("preparing data...")
     scene_list = get_scene_list("data/scannetv2_val.txt")
-    dataset = ScannetDatasetWholeScene(scene_list, use_color=args.use_color, use_normal=args.use_normal, use_multiview=args.use_multiview)
+    dataset = ScannetDatasetWholeScene(scene_list, npoints=args.npoints, use_color=args.use_color, use_normal=args.use_normal, use_multiview=args.use_multiview, chunk_size=args.chunk_size)
     dataloader = DataLoader(dataset, batch_size=1, collate_fn=collate_wholescene)
 
     # load model
@@ -232,6 +232,8 @@ if __name__ == "__main__":
     parser.add_argument("--use_color", action="store_true", help="use color values or not")
     parser.add_argument("--use_normal", action="store_true", help="use normals or not")
     parser.add_argument("--use_multiview", action="store_true", help="use multiview image features or not")
+    parser.add_argument("--npoints", type=int, help="number of points in each chunk", default=8192)
+    parser.add_argument("--chunk_size", type=float, help="chunk size", default=4.0)
     args = parser.parse_args()
 
     # setting

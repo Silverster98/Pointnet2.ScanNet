@@ -12,18 +12,14 @@ from torch.utils.data import DataLoader
 
 sys.path.append(os.path.join(os.getcwd())) # HACK add the root folder
 from lib.solver import Solver
-from lib.dataset import ScannetDataset, ScannetDatasetWholeScene, collate_random, collate_wholescene
+from lib.dataset import ScannetDatasetCompleteScene, collate_random
 from lib.loss import WeightedCrossEntropyLoss
 from lib.config import CONF
 
-
 def get_dataloader(args, scene_list, phase):
-    if args.use_wholescene:
-        dataset = ScannetDatasetWholeScene(scene_list, npoints=args.npoints, is_weighting=not args.no_weighting, use_color=args.use_color, use_normal=args.use_normal, use_multiview=args.use_multiview, chunk_size=args.chunk_size)
-        dataloader = DataLoader(dataset, batch_size=1, collate_fn=collate_wholescene, num_workers=args.num_workers, pin_memory=True)
-    else:
-        dataset = ScannetDataset(phase, scene_list, npoints=args.npoints, is_weighting=not args.no_weighting, use_color=args.use_color, use_normal=args.use_normal, use_multiview=args.use_multiview, chunk_size=args.chunk_size)
-        dataloader = DataLoader(dataset, batch_size=args.batch_size, collate_fn=collate_random, num_workers=args.num_workers, pin_memory=True)
+    
+    dataset = ScannetDatasetCompleteScene(phase, scene_list, npoints=args.npoints, is_weighting=not args.no_weighting, use_color=args.use_color, use_normal=args.use_normal, use_multiview=args.use_multiview)
+    dataloader = DataLoader(dataset, batch_size=args.batch_size, collate_fn=collate_random, num_workers=args.num_workers, pin_memory=True)
 
     return dataset, dataloader
 
@@ -126,8 +122,7 @@ if __name__ == '__main__':
     parser.add_argument("--use_color", action="store_true", help="use color values or not")
     parser.add_argument("--use_normal", action="store_true", help="use normals or not")
     parser.add_argument("--use_multiview", action="store_true", help="use multiview image features or not")
-    parser.add_argument("--npoints", type=int, help="number of points in each chunk", default=8192)
-    parser.add_argument("--chunk_size", type=float, help="chunk size", default=4.0)
+    parser.add_argument("--npoints", type=int, default=8192, help="npoints")
     args = parser.parse_args()
 
     # setting

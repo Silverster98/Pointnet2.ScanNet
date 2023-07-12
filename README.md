@@ -60,7 +60,7 @@ Parse the ScanNet data into `*.npy` files and save them in `preprocessing/scanne
 ```shell
 python preprocessing/collect_scannet_scenes.py
 ```
-### Sanity check
+#### Sanity check
 Don't forget to visualize the preprocessed scenes to check the consistency
 ```shell
 python preprocessing/visualize_prep_scene.py --scene_id <scene_id>
@@ -69,14 +69,15 @@ The visualized `<scene_id>.ply` is stored in `preprocessing/label_point_clouds/`
 
 <img src="img/snapshot.png"/>
 
-### train
+### Train with chunked scenes
+#### train
 Train the PointNet++ semantic segmentation model on ScanNet scenes with raw RGB values and point normals (for more training options, see `python scripts/train.py -h`)
 ```shell
 python scripts/train.py --use_color --use_normal --use_msg
 ```
 The trained models and logs will be saved in `outputs/<time_stamp>/`
 
-### eval
+#### eval
 Evaluate the trained models and report the segmentation performance in point accuracy, voxel accuracy and calibrated voxel accuracy
 ```shell
 python scripts/eval.py --folder <time_stamp>
@@ -84,7 +85,7 @@ python scripts/eval.py --folder <time_stamp>
 
 > Note that all model options must match the ones used for training.
 
-### vis
+#### vis
 Visualize the semantic segmentation results on points in a given scene
 ```shell
 python scripts/visualize.py --folder <time_stamp> --scene_id <scene_id>
@@ -95,6 +96,22 @@ python scripts/visualize.py --folder <time_stamp> --scene_id <scene_id>
 The generated `<scene_id>.ply` is stored in `outputs/<time_stamp>/preds` - Drag that file into MeshLab and you'll see something like the one below. See the class palette [here](http://kaldir.vc.in.tum.de/scannet_benchmark/img/legend.jpg)
 
 <img src="img/snapshot_pred.png"/>
+
+### Train with complete scenes
+
+#### train
+
+**With the complete scene as input instead of a chunk**
+
+```shell
+python scripts/train_complete_scene.py --use_color --use_normal --use_msg
+```
+
+#### vis
+
+```shell
+python scripts/visualize_complete_scene.py --folder <time_stamp> --scene_id <scene_id>
+```
 
 ## Changelog
 

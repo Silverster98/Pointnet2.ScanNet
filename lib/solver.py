@@ -2,7 +2,7 @@ import os
 import time
 import torch
 import numpy as np
-from tensorboardX import SummaryWriter
+from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import StepLR
 
 import sys
@@ -121,8 +121,9 @@ class Solver():
             self._train(self.dataloader["train"], epoch_id)
 
             # val
-            self._set_phase("eval")
-            self._val(self.dataloader["val"], epoch_id)
+            with torch.no_grad():
+                self._set_phase("eval")
+                self._val(self.dataloader["val"], epoch_id)
 
             # epoch report
             self._epoch_report(epoch_id)
