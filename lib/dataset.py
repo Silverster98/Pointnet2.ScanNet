@@ -651,10 +651,10 @@ def collate_wholescene(data):
 
     # pack
     batch = (
-        coords,             # (B, N, 3)
-        feats,              # (B, N, 3)
-        semantic_segs,      # (B, N)
-        sample_weights,     # (B, N)
+        coords,             # (B, C, N, 3)
+        feats,              # (B, C, N, 3)
+        semantic_segs,      # (B, C, N)
+        sample_weights,     # (B, C, N)
         sum(fetch_time)          # float
     )
 
